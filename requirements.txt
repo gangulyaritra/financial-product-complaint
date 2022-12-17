@@ -1,0 +1,12 @@
+apache-airflow
+boto3
+ipykernel
+jupyterlab
+pandas
+pymongo[srv]
+pyspark
+python-dotenv
+PyYAML
+regex
+requests
+-e .

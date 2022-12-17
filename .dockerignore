@@ -1,0 +1,10 @@
+.*
+env
+venv
+artifact
+flowchart
+logs
+LICENSE
+README.md
+sample_data
+saved_models
