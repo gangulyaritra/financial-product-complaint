@@ -4,7 +4,7 @@
 
 Complaints provide insights into problems that a customer experiences in the marketplace and help to understand the reason for necessary modifications in the existing financial product if required.
 
-By understanding existing complaints registered against financial products, we can apply machine learning to identify newly registered complaints, whether they are problematic or not, and accordingly, take quick action to resolve the issue and satisfy the customer's need. The task is to identify whether or not the registered complaint will get disputed by the customer.
+By considering the existing complaints made against financial products, we can apply machine learning to identify freshly registered complaints, whether they are troublesome or not, and allow the business to resolve the issue and satisfy the customer's needs. The task is to identify whether or not the newly registered complaints will get disputed by the customer.
 
 ### Dataset.
 
@@ -20,15 +20,21 @@ Download the dataset from this [**[LINK]**](https://www.consumerfinance.gov/data
 
 3. Apache Airflow
 
-4. Dashboard (Prometheus, Grafana, Promtail, Loki, Node Exporter)
+4. Dockers and Docker Compose
 
-5. AWS S3 Bucket for Artifact Registry.
+5. Dashboard (Prometheus, Grafana, Promtail, Loki, Node Exporter)
 
-6. GCP Container Registry to store Docker Images.
+6. AWS S3 Bucket for Artifact Registry
 
-7. GCP Compute Engine to deploy the application.
+7. GCP Container Registry to store Docker Images
 
-8. CircleCI for CI/CD Pipeline.
+8. GCP Compute Engine to deploy the application
+
+9. CircleCI for CI/CD Pipeline
+
+10. Terraform for Infrastructure
+
+### Project Setup.
 
 #### Step 1: Install PySpark locally OR access PySpark on Neuro Lab.
 
@@ -43,9 +49,9 @@ pip install -r requirements.txt
 Paste the following credentials as system environment variables.
 =========================================================================
 
-MONGO_DB_URL="mongodb+srv://root:root@fpc-db.znfajpt.mongodb.net/?retryWrites=true&w=majority"
-AWS_ACCESS_KEY_ID=AKIAV5L23LTSB3GNK5OV
-AWS_SECRET_ACCESS_KEY=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
+MONGO_DB_URL="mongodb+srv://root:root@fpc-db.5ozx1xh.mongodb.net/?retryWrites=true&w=majority"
+AWS_ACCESS_KEY_ID=AKIAQPXB5DU5SGQLRRYG
+AWS_SECRET_ACCESS_KEY=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
 TRAINING=1
 PREDICTION=1
 ```
@@ -74,13 +80,21 @@ docker-compose up
 docker-compose down
 ```
 
+### Deployment Steps & Description.
+
+- Build a Docker image of the source code.
+- Push the Docker image to GCP Container Registry.
+- Launch the GCP Compute Engine.
+- Pull the Docker image from Container Registry to Compute Engine.
+- Launch the Docker image inside GCP Compute Engine and deploy the application.
+
 ### Apache Airflow Setup.
 
 Only Linux and Mac support Apache Airflow Setup.
 
 #### Set Airflow Directory.
 ```bash
-export AIRFLOW_HOME="/home/dimpu/VSCode/financial-product-complaint/airflow"
+export AIRFLOW_HOME="/home/dimpu/financial-product-complaint/airflow"
 ```
 
 #### Install Airflow.
@@ -98,7 +112,7 @@ airflow db init
 airflow users create  -e aritraganguly.msc@protonmail.com -f Aritra -l Ganguly -p admin -r Admin  -u admin
 ```
 
-#### Start Scheduler.
+#### Start Airflow Scheduler.
 ```bash
 airflow scheduler
 ```

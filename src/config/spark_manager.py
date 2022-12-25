@@ -12,10 +12,10 @@ secret_access_key = os.getenv(AWS_SECRET_ACCESS_KEY_ENV_KEY)
 spark_session = (
     SparkSession.builder.master("local[*]")
     .appName("financial_product_complaint")
-    # .config("spark.executor.instances", "1")
-    # .config("spark.executor.memory", "6g")
-    # .config("spark.driver.memory", "6g")
-    # .config("spark.executor.memoryOverhead", "8g")
+    .config("spark.executor.instances", "1")
+    .config("spark.executor.memory", "6g")
+    .config("spark.driver.memory", "6g")
+    .config("spark.executor.memoryOverhead", "8g")
     .config(
         "spark.jars.packages",
         "com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3",

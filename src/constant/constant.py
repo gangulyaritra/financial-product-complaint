@@ -3,7 +3,7 @@ from datetime import datetime
 TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # Database Constants.
-DATABASE_NAME = "FPC-DB"
+DATABASE_NAME = "fpc-db"
 
 # Environment Variable Constants.
 MONGO_DB_URL_ENV_KEY = "MONGO_DB_URL"
