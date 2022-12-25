@@ -13,7 +13,7 @@ jobs:
       - run:
           name: Run Unit Tests
           command: echo "Running Unit Tests"
-
+  
   continuous-delivery:
     docker:
       - image: google/cloud-sdk
@@ -26,27 +26,30 @@ jobs:
       - checkout
       - run:
           name: Google Cloud Authentication
-          command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          command: >
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account
+            --key-file=-
+
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-
       - setup_remote_docker:
-          version: 22.04
+          version: 20.10.14
           docker_layer_caching: true
-
       - run:
           name: Build and Tag
-          command: docker build -t $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG .
-
+          command: >-
+            docker build -t
+            $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG .
       - run:
           name: Configure Docker Login
           command: gcloud auth configure-docker $GOOGLE_COMPUTE_ZONE-docker.pkg.dev
-
       - run:
           name: Push Image to Private Repository
-          command: docker push $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
-
+          command: >-
+            docker push
+            $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+  
   continuous-deployment:
     machine: true
     resource_class: gangulyaritra/self-hosted-1
@@ -60,26 +63,29 @@ jobs:
       MONGO_DB_URL: ${MONGO_DB_URL}
     steps:
       - checkout
-
       - run:
           name: Google Cloud Authentication
-          command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+          command: >
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account
+            --key-file=-
 
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
       - run:
           name: Configure Docker Login
           command: gcloud auth configure-docker $GOOGLE_COMPUTE_ZONE-docker.pkg.dev
-
       - run:
           name: Pull the Image from the Private Repository
-          command: docker pull ${GOOGLE_COMPUTE_ZONE}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$REPOSITORY/$GAR_IMAGE_NAME:$IMAGE_TAG
-
+          command: >-
+            docker pull
+            ${GOOGLE_COMPUTE_ZONE}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$REPOSITORY/$GAR_IMAGE_NAME:$IMAGE_TAG
       - run:
           name: Set Environment Variables
-          command: echo 'export IMAGE_NAME="${GOOGLE_COMPUTE_ZONE}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$REPOSITORY/fpc-img:$IMAGE_TAG"' >> "$BASH_ENV"
-
+          command: >-
+            echo 'export
+            IMAGE_NAME="${GOOGLE_COMPUTE_ZONE}-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$REPOSITORY/fpc-img:$IMAGE_TAG"'
+            >> "$BASH_ENV"
       - run:
           name: Start the Containers
           command: docker-compose up -d
@@ -88,16 +94,13 @@ workflows:
   CICD:
     jobs:
       - continuous-integration
-
       - continuous-delivery:
           requires:
             - continuous-integration
-
       - sanity-check:
           type: approval
           requires:
             - continuous-delivery
-
       - continuous-deployment:
           requires:
             - sanity-check
