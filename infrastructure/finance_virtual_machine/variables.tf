@@ -8,10 +8,9 @@ variable "finance_compute_network_name" {
   default = "finance-network"
 }
 
-
 variable "finance_project_name" {
   type    = string
-  default = "industry-ready-finance"
+  default = "financial-product-complaint"
 }
 
 variable "finance_auto_create_subnetworks" {
@@ -49,10 +48,9 @@ variable "finance_iam_user_role" {
   default = "roles/compute.admin"
 }
 
-
 variable "finance_iam_user_email" {
   type    = string
-  default = "user:cloud@ineuron.ai"
+  default = "aritraganguly.msc@protonmail.com"
 }
 
 variable "finance_service_account_id" {
@@ -82,7 +80,7 @@ variable "finance_compute_instance_zone" {
 
 variable "finance_compute_instance_base_image" {
   type    = string
-  default = "ubuntu-os-cloud/ubuntu-2004-lts"
+  default = "ubuntu-os-cloud/ubuntu-2204-lts"
 }
 
 variable "finance_network_interface" {

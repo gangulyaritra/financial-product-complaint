@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "model_bucket_name" {
   type    = string
-  default = "finance-cat-service"
+  default = "fpc-model-storage"
 }
 
 variable "aws_account_id" {

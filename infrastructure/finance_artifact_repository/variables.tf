@@ -4,12 +4,12 @@ variable "artifact_repository_iam_role_binding" {
 }
 
 variable "artifact_repository_iam_members" {
-  default = "user:cloud@ineuron.ai"
+  default = "aritraganguly.msc@protonmail.com"
   type    = string
 }
 
 variable "project_name" {
-  default = "industry-ready-finance"
+  default = "financial-product-complaint"
   type    = string
 }
 
